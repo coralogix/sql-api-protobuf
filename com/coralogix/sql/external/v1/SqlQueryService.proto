@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package com.coralogix.sql.external.v1;
+option (scalapb.options) = {
+  package_name: "com.coralogix.sql.grpc.external.v1"
+};
+
+import "scalapb/scalapb.proto";
+import "google/protobuf/struct.proto";
+
+service SqlQueryService {
+  rpc RunQuery(QueryRequest) returns (QueryResponse) {}
+}
+
+message QueryRequest {
+  string query = 1;
+  repeated QueryParameter parameters = 2;
+}
+
+message QueryParameter {
+  google.protobuf.Value value = 1;
+  Type type = 2;
+}
+
+enum Type {
+  BOOLEAN = 0;
+  BYTE = 1;
+  SHORT = 2;
+  INTEGER = 3;
+  LONG = 4;
+  HALF_FLOAT = 5;
+  FLOAT = 6;
+  DOUBLE = 7;
+  SCALED_FLOAT = 8;
+  KEYWORD = 9;
+  TEXT = 10;
+  STRING = 11;
+  IP = 12;
+  NESTED = 13;
+  OBJECT = 14;
+  DATE = 15;
+  NULL = 16;
+  UNSUPPORTED = 17;
+}
+
+message QueryResponse {
+  repeated Row rows = 1;
+  repeated ColumnDescriptor columnDescriptors = 2;
+}
+
+message Row {
+  repeated google.protobuf.Value values = 1;
+}
+
+message ColumnDescriptor {
+  string name = 1;
+  string label = 2;
+  Type type = 3;
+}
