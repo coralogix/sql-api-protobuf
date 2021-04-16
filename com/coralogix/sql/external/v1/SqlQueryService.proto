@@ -11,6 +11,7 @@ import "google/protobuf/struct.proto";
 service SqlQueryService {
   rpc RunQuery(QueryRequest) returns (QueryResponse) {}
   rpc Schema(SchemaRequest) returns (SchemaResponse) {}
+  rpc Check(CheckRequest) returns (CheckResponse) {}
 }
 
 message QueryRequest {
@@ -53,6 +54,13 @@ message SchemaRequest {}
 
 message SchemaResponse {
   repeated ColumnDescriptor columnDescriptors = 1;
+}
+
+message CheckRequest {}
+
+message CheckResponse {
+  bool valid = 1;
+  string error = 2;
 }
 
 message Row {
